@@ -1,25 +1,255 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { ArrowRight, Star, Users, Tv, Music, Award } from 'lucide-react';
+import { motion, useViewportScroll, useTransform } from 'framer-motion';
+import './index.css';
 
-function App() {
+const LandingPage = () => {
+  const [activeSection, setActiveSection] = useState('home');
+  const { scrollYProgress } = useViewportScroll();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const sections = document.querySelectorAll('section');
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.offsetHeight;
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          setActiveSection(section.getAttribute('id'));
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    section.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const guitarY = useTransform(scrollYProgress, [0, 0.3], ['-100%', '0%']);
+  const dancerY = useTransform(scrollYProgress, [0.3, 0.6], ['100%', '0%']);
+  const groupY = useTransform(scrollYProgress, [0.6, 0.9], ['-100%', '0%']);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="bg-black text-white min-h-screen font-sans">
+      <header className="fixed top-0 left-0 right-0 bg-black bg-opacity-80 z-50">
+        <nav className="container mx-auto px-6 py-3">
+          <ul className="flex justify-center space-x-6">
+            {['home', 'features', 'about', 'services', 'overview', 'team', 'contact'].map((item) => (
+              <li key={item}>
+                <a
+                  href={`#${item}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item);
+                  }}
+                  className={`text-gold hover:text-white transition-colors duration-300 capitalize ${
+                    activeSection === item ? 'border-b-2 border-gold' : ''
+                  }`}
+                >
+                  {item}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </header>
+
+      <main>
+        <section id="home" className="h-screen flex items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-black to-gray-900"></div>
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-center relative z-10"
+          >
+            <h1 className="text-8xl font-bold mb-4 text-gold">PerformX</h1>
+            <p className="text-3xl mb-8">Connecting Performers with Opportunities</p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gold text-black px-8 py-4 rounded-full text-xl font-semibold hover:bg-white transition-colors duration-300"
+            >
+              Get Started
+            </motion.button>
+          </motion.div>
+        </section>
+
+        <section id="features" className="py-20 relative overflow-hidden">
+          <motion.div
+            style={{ y: guitarY }}
+            className="absolute right-0 top-0 bottom-0 w-1/3 bg-contain bg-no-repeat bg-right"
+            style={{
+              backgroundImage: "url('https://example.com/guitar-player-silhouette.png')",
+            }}
+          ></motion.div>
+          <div className="container mx-auto px-6 relative z-10">
+            <h2 className="text-5xl font-bold mb-16 text-center text-gold">Features</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+              {[
+                { icon: Star, title: 'Real-time Leaderboard', description: 'Track your performance and climb the ranks.' },
+                { icon: Users, title: 'Connect with Peers', description: 'Network with other talented performers.' },
+                { icon: Tv, title: 'Reality Show Opportunities', description: 'Top performers get exclusive show invites.' },
+              ].map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  className="text-center bg-gray-900 p-8 rounded-lg shadow-lg"
+                >
+                  <feature.icon className="w-20 h-20 mx-auto mb-6 text-gold" />
+                  <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
+                  <p className="text-lg">{feature.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="about" className="py-20 bg-gray-900 relative overflow-hidden">
+          <motion.div
+            style={{ y: dancerY }}
+            className="absolute left-0 top-0 bottom-0 w-1/3 bg-contain bg-no-repeat bg-left"
+            style={{
+              backgroundImage: "url('https://example.com/female-dancer-silhouette.png')",
+            }}
+          ></motion.div>
+          <div className="container mx-auto px-6 relative z-10">
+            <h2 className="text-5xl font-bold mb-12 text-center text-gold">About PerformX</h2>
+            <motion.p
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-xl text-center max-w-3xl mx-auto"
+            >
+              PerformX is a dedicated social media platform for performers, connecting actors, singers, and dancers with reality shows and producers. Our mission is to provide a stage for talent to shine and create opportunities for growth in the entertainment industry.
+            </motion.p>
+          </div>
+        </section>
+
+        <section id="services" className="py-20 relative overflow-hidden">
+          <motion.div
+            style={{ y: groupY }}
+            className="absolute right-0 top-0 bottom-0 w-1/3 bg-contain bg-no-repeat bg-right"
+            style={{
+              backgroundImage: "url('https://example.com/acting-group-silhouette.png')",
+            }}
+          ></motion.div>
+          <div className="container mx-auto px-6 relative z-10">
+            <h2 className="text-5xl font-bold mb-16 text-center text-gold">Our Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+              {[
+                { icon: Music, title: 'Music Production', description: 'Connect with top music producers to create your next hit.' },
+                { icon: Award, title: 'Acting Workshops', description: 'Hone your acting skills with industry professionals.' },
+                { icon: Users, title: 'Dance Collaborations', description: 'Find dance partners and choreographers for your next performance.' },
+                { icon: Tv, title: 'Reality Show Castings', description: 'Exclusive access to reality show auditions and castings.' },
+              ].map((service, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="flex items-start bg-gray-900 p-8 rounded-lg shadow-lg"
+                >
+                  <service.icon className="w-16 h-16 mr-6 text-gold" />
+                  <div>
+                    <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
+                    <p className="text-lg">{service.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="overview" className="py-20 bg-gray-900">
+          <div className="container mx-auto px-6">
+            <h2 className="text-5xl font-bold mb-16 text-center text-gold">Platform Overview</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {['Discover Talent', 'Collaborate', 'Grow Your Career'].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  className="bg-black p-8 rounded-lg shadow-lg text-center"
+                >
+                  <h3 className="text-2xl font-semibold mb-4 text-gold">{item}</h3>
+                  <p className="text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="team" className="py-20">
+          <div className="container mx-auto px-6">
+            <h2 className="text-5xl font-bold mb-16 text-center text-gold">Our Team</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {[
+                { name: 'Suprith S', role: 'Chief Technology Officer' },
+                { name: 'Milanjyoti Ray', role: 'Founder & CEO' },
+                { name: 'Karan Bharat', role: 'Co-Founder' },
+              ].map((member, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  className="text-center bg-gray-900 p-8 rounded-lg shadow-lg"
+                >
+                  <div className="w-40 h-40 rounded-full bg-gold mx-auto mb-6"></div>
+                  <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
+                  <p className="text-gold text-lg">{member.role}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="py-20 bg-gray-900">
+          <div className="container mx-auto px-6">
+            <h2 className="text-5xl font-bold mb-16 text-center text-gold">Contact Us</h2>
+            <motion.form
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="max-w-lg mx-auto"
+            >
+              <div className="mb-6">
+                <input type="text" placeholder="Your Name" className="w-full px-4 py-3 rounded bg-black border border-gold text-white text-lg" />
+              </div>
+              <div className="mb-6">
+                <input type="email" placeholder="Your Email" className="w-full px-4 py-3 rounded bg-black border border-gold text-white text-lg" />
+              </div>
+              <div className="mb-6">
+                <textarea placeholder="Your Message" rows="4" className="w-full px-4 py-3 rounded bg-black border border-gold text-white text-lg"></textarea>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                className="bg-gold text-black px-8 py-3 rounded-full text-xl font-semibold hover:bg-white transition-colors duration-300"
+              >
+                Send Message
+              </motion.button>
+            </motion.form>
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-black py-8">
+        <div className="container mx-auto px-6 text-center">
+          <p className="text-gold">&copy; 2024 PerformX. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
-}
+};
 
-export default App;
+export default LandingPage;
