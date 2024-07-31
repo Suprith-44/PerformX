@@ -2,13 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+  --gold: #FFD700;
+  --black: #000000;
+  --dark-gray: #1A1A1A;
+}
+
+@layer base {
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--black);
+    color: white;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .text-gold {
+    color: var(--gold);
+  }
+
+  .bg-gold {
+    background-color: var(--gold);
+  }
+
+  .border-gold {
+    border-color: var(--gold);
+  }
+
+  .hover\:text-gold:hover {
+    color: var(--gold);
+  }
+
+  .hover\:bg-gold:hover {
+    background-color: var(--gold);
+  }
+
+  .shadow-gold {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+}
+
+@layer utilities {
+  .transition-all {
+    transition: all 0.3s ease;
+  }
 }
 
 code {

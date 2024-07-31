@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Star, Users, Tv, Music, Award } from 'lucide-react';
-import { motion, useViewportScroll, useTransform } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import './index.css';
+import GoldenParticles from './goldenparticles';
+
+// Importing images directly
+import suprithImage from './suprith.jpeg';
+import milanImage from './milan.png';
+import karanImage from './karan.jpg';
 
 const LandingPage = () => {
   const [activeSection, setActiveSection] = useState('home');
-  const { scrollYProgress } = useViewportScroll();
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,10 +34,6 @@ const LandingPage = () => {
     const section = document.getElementById(sectionId);
     section.scrollIntoView({ behavior: 'smooth' });
   };
-
-  const guitarY = useTransform(scrollYProgress, [0, 0.3], ['-100%', '0%']);
-  const dancerY = useTransform(scrollYProgress, [0.3, 0.6], ['100%', '0%']);
-  const groupY = useTransform(scrollYProgress, [0.6, 0.9], ['-100%', '0%']);
 
   return (
     <div className="bg-black text-white min-h-screen font-sans">
@@ -60,7 +62,9 @@ const LandingPage = () => {
 
       <main>
         <section id="home" className="h-screen flex items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-black to-gray-900"></div>
+          <div className="absolute inset-0 bg-black">
+            <GoldenParticles />
+          </div>
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -68,7 +72,7 @@ const LandingPage = () => {
             className="text-center relative z-10"
           >
             <h1 className="text-8xl font-bold mb-4 text-gold">PerformX</h1>
-            <p className="text-3xl mb-8">Connecting Performers with Opportunities</p>
+            <p className="text-3xl mb-8 ">Where Talent meets Opportunities</p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -80,13 +84,6 @@ const LandingPage = () => {
         </section>
 
         <section id="features" className="py-20 relative overflow-hidden">
-          <motion.div
-            style={{ y: guitarY }}
-            className="absolute right-0 top-0 bottom-0 w-1/3 bg-contain bg-no-repeat bg-right"
-            style={{
-              backgroundImage: "url('https://example.com/guitar-player-silhouette.png')",
-            }}
-          ></motion.div>
           <div className="container mx-auto px-6 relative z-10">
             <h2 className="text-5xl font-bold mb-16 text-center text-gold">Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
@@ -99,8 +96,9 @@ const LandingPage = () => {
                   key={index}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255, 215, 0, 0.7)" }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
-                  className="text-center bg-gray-900 p-8 rounded-lg shadow-lg"
+                  className="text-center bg-gray-900 p-8 rounded-lg shadow-lg border border-gold"
                 >
                   <feature.icon className="w-20 h-20 mx-auto mb-6 text-gold" />
                   <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
@@ -112,13 +110,6 @@ const LandingPage = () => {
         </section>
 
         <section id="about" className="py-20 bg-gray-900 relative overflow-hidden">
-          <motion.div
-            style={{ y: dancerY }}
-            className="absolute left-0 top-0 bottom-0 w-1/3 bg-contain bg-no-repeat bg-left"
-            style={{
-              backgroundImage: "url('https://example.com/female-dancer-silhouette.png')",
-            }}
-          ></motion.div>
           <div className="container mx-auto px-6 relative z-10">
             <h2 className="text-5xl font-bold mb-12 text-center text-gold">About PerformX</h2>
             <motion.p
@@ -127,34 +118,28 @@ const LandingPage = () => {
               transition={{ duration: 0.8 }}
               className="text-xl text-center max-w-3xl mx-auto"
             >
-              PerformX is a dedicated social media platform for performers, connecting actors, singers, and dancers with reality shows and producers. Our mission is to provide a stage for talent to shine and create opportunities for growth in the entertainment industry.
+              PerformX is a revolutionary online platform empowering performers to showcase their talents, connect with industry professionals, and access unparalleled opportunities. Our innovative platform bridges the gap between aspiring artists and the entertainment industry, providing a seamless and supportive ecosystem for success.
             </motion.p>
           </div>
         </section>
 
         <section id="services" className="py-20 relative overflow-hidden">
-          <motion.div
-            style={{ y: groupY }}
-            className="absolute right-0 top-0 bottom-0 w-1/3 bg-contain bg-no-repeat bg-right"
-            style={{
-              backgroundImage: "url('https://example.com/acting-group-silhouette.png')",
-            }}
-          ></motion.div>
           <div className="container mx-auto px-6 relative z-10">
             <h2 className="text-5xl font-bold mb-16 text-center text-gold">Our Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
               {[
-                { icon: Music, title: 'Music Production', description: 'Connect with top music producers to create your next hit.' },
-                { icon: Award, title: 'Acting Workshops', description: 'Hone your acting skills with industry professionals.' },
-                { icon: Users, title: 'Dance Collaborations', description: 'Find dance partners and choreographers for your next performance.' },
-                { icon: Tv, title: 'Reality Show Castings', description: 'Exclusive access to reality show auditions and castings.' },
+                { icon: Music, title: 'Talent Showcase', description: 'Showcase your talents to a global audience, share your performances and get discovered by industry professionals and create a portfolio that highlights your skills and achievements' },
+                { icon: Award, title: 'Performance Analytics', description: "Get insights into your performance metrics and audience engagement, Understand what works and what doesn't, and adjust your strategy accordingly and stay on top of your game with data-driven decisions" },
+                { icon: Users, title: 'Career Opportunities', description: 'Access exclusive job listings and casting calls, connect with industry professionals and potential collaborators and stay updated on the latest industry trends and news' },
+                { icon: Tv, title: 'Community Support', description: 'Connect with like-minded performers and industry professionals, share knowledge, resources, and experiences and get support and motivation to help you achieve your goals.' },
               ].map((service, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255, 215, 0, 0.7)" }}
                   transition={{ duration: 0.8 }}
-                  className="flex items-start bg-gray-900 p-8 rounded-lg shadow-lg"
+                  className="flex items-start bg-gray-900 p-8 rounded-lg shadow-lg border border-gold"
                 >
                   <service.icon className="w-16 h-16 mr-6 text-gold" />
                   <div>
@@ -176,8 +161,9 @@ const LandingPage = () => {
                   key={index}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255, 215, 0, 0.7)" }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
-                  className="bg-black p-8 rounded-lg shadow-lg text-center"
+                  className="bg-black p-8 rounded-lg shadow-lg text-center border border-gold"
                 >
                   <h3 className="text-2xl font-semibold mb-4 text-gold">{item}</h3>
                   <p className="text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
@@ -192,20 +178,26 @@ const LandingPage = () => {
             <h2 className="text-5xl font-bold mb-16 text-center text-gold">Our Team</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {[
-                { name: 'Suprith S', role: 'Chief Technology Officer' },
-                { name: 'Milanjyoti Ray', role: 'Founder & CEO' },
-                { name: 'Karan Bharat', role: 'Co-Founder' },
+                { name: 'Suprith S', role: 'Chief Technology Officer', image: suprithImage },
+                { name: 'Milanjyoti Ray', role: 'Founder & CEO', image: milanImage },
+                { name: 'Karan Bharat', role: 'Co-Founder', image: karanImage },
               ].map((member, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
-                  className="text-center bg-gray-900 p-8 rounded-lg shadow-lg"
+                  className="text-center bg-gray-900 p-8 rounded-lg shadow-lg border-2 border-gold"
                 >
-                  <div className="w-40 h-40 rounded-full bg-gold mx-auto mb-6"></div>
-                  <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
-                  <p className="text-gold text-lg">{member.role}</p>
+                  <motion.div 
+                    className="w-40 h-40 rounded-full mx-auto mb-6 overflow-hidden"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                  </motion.div>
+                  <h3 className="text-2xl font-semibold mb-2 text-gold">{member.name}</h3>
+                  <p className="text-white text-lg">{member.role}</p>
                 </motion.div>
               ))}
             </div>
