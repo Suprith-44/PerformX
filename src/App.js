@@ -71,7 +71,7 @@ const LandingPage = () => {
             className="text-center relative z-10"
           >
             <h1 className="text-8xl font-bold mb-4 text-gold">PerformX</h1>
-            <p className="text-3xl mb-8 ">Where Talent meets Opportunities</p>
+            <p className="text-3xl mb-8 ">Where Talent Meets Opportunities</p>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -127,10 +127,26 @@ const LandingPage = () => {
             <h2 className="text-5xl font-bold mb-16 text-center text-gold">Our Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
               {[
-                { icon: Music, title: 'Talent Showcase', description: 'Showcase your talents to a global audience, share your performances and get discovered by industry professionals and create a portfolio that highlights your skills and achievements' },
-                { icon: Award, title: 'Performance Analytics', description: "Get insights into your performance metrics and audience engagement, Understand what works and what doesn't, and adjust your strategy accordingly and stay on top of your game with data-driven decisions" },
-                { icon: Users, title: 'Career Opportunities', description: 'Access exclusive job listings and casting calls, connect with industry professionals and potential collaborators and stay updated on the latest industry trends and news' },
-                { icon: Tv, title: 'Community Support', description: 'Connect with like-minded performers and industry professionals, share knowledge, resources, and experiences and get support and motivation to help you achieve your goals.' },
+                { icon: Music, title: 'Talent Showcase', description: [
+                  'Showcase your talents to a global audience',
+                  'Share your performances and get discovered by industry professionals',
+                  'Create a portfolio that highlights your skills and achievements'
+                ]},
+                { icon: Award, title: 'Performance Analytics', description: [
+                  'Get insights into your performance metrics and audience engagement',
+                  "Understand what works and what doesn't, and adjust your strategy accordingly",
+                  'Stay on top of your game with data-driven decisions'
+                ]},
+                { icon: Users, title: 'Career Opportunities', description: [
+                  'Access exclusive job listings and casting calls',
+                  'Connect with industry professionals and potential collaborators',
+                  'Stay updated on the latest industry trends and news'
+                ]},
+                { icon: Tv, title: 'Community Support', description: [
+                  'Connect with like-minded performers and industry professionals',
+                  'Share knowledge, resources, and experiences',
+                  'Get support and motivation to help you achieve your goals'
+                ]},
               ].map((service, index) => (
                 <motion.div
                   key={index}
@@ -143,7 +159,11 @@ const LandingPage = () => {
                   <service.icon className="w-16 h-16 mr-6 text-gold" />
                   <div>
                     <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
-                    <p className="text-lg">{service.description}</p>
+                    <ul className="text-lg list-disc pl-5">
+                      {service.description.map((point, i) => (
+                        <li key={i}>{point}</li>
+                      ))}
+                    </ul>
                   </div>
                 </motion.div>
               ))}
@@ -151,21 +171,42 @@ const LandingPage = () => {
           </div>
         </section>
 
-        <section id="overview" className="py-20 bg-gray-900">
-          <div className="container mx-auto px-6">
+        <section id="overview" className="py-20 bg-gray-900 relative overflow-hidden">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="container mx-auto px-6 relative z-10">
             <h2 className="text-5xl font-bold mb-16 text-center text-gold">Platform Overview</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              {['Discover Talent', 'Collaborate', 'Grow Your Career'].map((item, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { title: 'Discover Talent', points: [
+                  'Browse through a diverse pool of performers',
+                  'Filter talents based on skills, experience, and location',
+                  'Watch demo reels and live performances'
+                ]},
+                { title: 'Collaborate', points: [
+                  'Connect with other artists for projects',
+                  'Join virtual rehearsal rooms',
+                  'Share resources and ideas in our community forums'
+                ]},
+                { title: 'Grow Your Career', points: [
+                  'Access personalized career development resources',
+                  'Attend virtual workshops and masterclasses',
+                  'Track your progress with performance analytics'
+                ]}
+              ].map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255, 215, 0, 0.7)" }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
-                  className="bg-black p-8 rounded-lg shadow-lg text-center border border-gold"
+                  className="bg-black p-8 rounded-lg shadow-lg border border-gold flex flex-col h-full"
                 >
-                  <h3 className="text-2xl font-semibold mb-4 text-gold">{item}</h3>
-                  <p className="text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <h3 className="text-2xl font-semibold mb-4 text-gold text-center">{item.title}</h3>
+                  <ul className="text-lg list-disc pl-5 flex-grow">
+                    {item.points.map((point, i) => (
+                      <li key={i} className="mb-2">{point}</li>
+                    ))}
+                  </ul>
                 </motion.div>
               ))}
             </div>
