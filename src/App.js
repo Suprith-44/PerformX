@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight, Star, Users, Tv, Music, Award } from 'lucide-react';
-import { motion, useScroll } from 'framer-motion';
+import {Star, Users, Tv, Music, Award } from 'lucide-react';
+import { motion} from 'framer-motion';
 import './index.css';
 import GoldenParticles from './goldenparticles';
 
@@ -11,7 +11,6 @@ import karanImage from './karan.jpg';
 
 const LandingPage = () => {
   const [activeSection, setActiveSection] = useState('home');
-  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const handleScroll = () => {
